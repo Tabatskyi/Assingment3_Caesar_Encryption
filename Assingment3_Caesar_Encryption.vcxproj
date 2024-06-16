@@ -127,7 +127,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="DLL\dllmain.cpp" />
+    <ClCompile Include="TextEditor\Append.cpp" />
+    <ClCompile Include="TextEditor\Copy.cpp" />
+    <ClCompile Include="TextEditor\Coursor.cpp" />
+    <ClCompile Include="TextEditor\Cut.cpp" />
+    <ClCompile Include="TextEditor\Delete.cpp" />
+    <ClCompile Include="TextEditor\Insert.cpp" />
+    <ClCompile Include="TextEditor\LoadFromFile.cpp" />
+    <ClCompile Include="TextEditor\Memory.cpp" />
+    <ClCompile Include="TextEditor\NewLine.cpp" />
+    <ClCompile Include="TextEditor\Paste.cpp" />
+    <ClCompile Include="TextEditor\Program.cpp" />
+    <ClCompile Include="TextEditor\Replace.cpp" />
+    <ClCompile Include="TextEditor\SaveToFile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TextEditor\Append.h" />
+    <ClInclude Include="TextEditor\Command.h" />
+    <ClInclude Include="TextEditor\Copy.h" />
+    <ClInclude Include="TextEditor\Coursor.h" />
+    <ClInclude Include="TextEditor\Cut.h" />
+    <ClInclude Include="TextEditor\Delete.h" />
+    <ClInclude Include="TextEditor\Insert.h" />
+    <ClInclude Include="TextEditor\LoadFromFile.h" />
+    <ClInclude Include="TextEditor\Memory.h" />
+    <ClInclude Include="TextEditor\NewLine.h" />
+    <ClInclude Include="TextEditor\Paste.h" />
+    <ClInclude Include="TextEditor\Replace.h" />
+    <ClInclude Include="TextEditor\RevertableCommand.h" />
+    <ClInclude Include="TextEditor\SaveToFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
