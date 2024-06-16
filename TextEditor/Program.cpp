@@ -23,6 +23,30 @@ static bool validatePosition(unsigned int line, unsigned int index, Memory* memo
 }
 
 
+
+//static char* shiftChars(char* text, float shift)
+//{
+//    for (int i = 0; text[i] != '\0'; i++)
+//    {
+//        int shiftedChar = (int)text[i];
+//        if ((shiftedChar >= 'a' && shiftedChar <= 'z') || (shiftedChar >= 'A' && shiftedChar <= 'Z'))
+//        {
+//            shiftedChar = shiftedChar + shift;
+//            if ((shiftedChar > 'Z' && shiftedChar < 'a' && (int)text[i] < 'a') || shiftedChar > 'z')
+//            {
+//                shiftedChar -= 26 * abs(round(shift / 26));
+//            }
+//            else if ((shiftedChar > 'Z' && shiftedChar < 'a' && (int)text[i] >= 'a') || shiftedChar < 'A')
+//            {
+//                shiftedChar += 26 * abs(round(shift / 26));
+//            }
+//            text[i] = (char)shiftedChar;
+//        }
+//    }
+//    return text;
+//}
+
+
 int main()
 {
     char command;
@@ -225,6 +249,39 @@ int main()
                 printf(">Invalid direction\n");
             }
         }
+        else if (command == 'g')
+		{
+			unsigned int x, y;
+			printf(">Enter position (x y): ");
+			(void)scanf("%u %u", &x, &y);
+
+			if (validatePosition(x, y, memory))
+			{
+				memory->coursor.SetPosition(x, y);
+			}
+		}
+        else if (command == '/')
+        {
+            int shift;
+            printf(">Enter shift amount to encode: ");
+            (void)scanf("%d", &shift);
+            for (int i = 0; i < memory->currentLinesNum; i++)
+			{
+				char* newLine = shiftChars(memory->textMemory[i], shift);
+                memory->textMemory[i] = newLine;
+			}
+		}
+        else if (command == '\\')
+        {
+            int shift;
+            printf(">Enter shift amount to decode: ");
+            (void)scanf("%d", &shift);
+            for (int i = 0; i < memory->currentLinesNum; i++)
+            {
+                char* newLine = shiftChars(memory->textMemory[i], -shift);
+                memory->textMemory[i] = newLine;
+            }
+		}
         else 
             printf(">unknown command\n");
 
