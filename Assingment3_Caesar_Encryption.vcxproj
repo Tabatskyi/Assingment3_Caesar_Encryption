@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DLL\dllmain.cpp" />
+    <ClCompile Include="DLL\CaesarCifer.cpp" />
     <ClCompile Include="TextEditor\Append.cpp" />
     <ClCompile Include="TextEditor\Copy.cpp" />
     <ClCompile Include="TextEditor\Coursor.cpp" />

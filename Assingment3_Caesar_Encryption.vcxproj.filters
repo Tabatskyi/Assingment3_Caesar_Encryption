@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DLL\dllmain.cpp">
+    <ClCompile Include="DLL\CaesarCifer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextEditor\Append.cpp">
