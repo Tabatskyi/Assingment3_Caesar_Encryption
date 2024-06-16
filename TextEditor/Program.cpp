@@ -25,9 +25,9 @@ static bool validatePosition(unsigned int line, unsigned int index, Memory* memo
 
 
 
-static char* shiftChars(char* text, float shift)
+static char* shiftChars(char* text, int shift)
 {
-    typedef char*(*shiftChar_ptr_t)(char*, float);
+    typedef char*(*shiftChar_ptr_t)(char*, int);
 
     HINSTANCE handle = LoadLibrary(TEXT("CaesarCifer.dll"));
     if (handle == nullptr || handle == INVALID_HANDLE_VALUE)
@@ -268,7 +268,11 @@ int main()
         {
             int shift;
             printf(">Enter shift amount to encode: ");
-            (void)scanf("%d", &shift);
+            (void)scanf("%u", &shift);
+
+            if (shift > 26)
+                shift %= 26;
+
             for (int i = 0; i <= memory->currentLine; i++)
 			{
 				char* newLine = shiftChars(memory->textMemory[i], shift);
@@ -279,7 +283,11 @@ int main()
         {
             int shift;
             printf(">Enter shift amount to decode: ");
-            (void)scanf("%d", &shift);
+            (void)scanf("%u", &shift);
+
+            if (shift > 26)
+				shift %= 26;
+
             for (int i = 0; i <= memory->currentLine; i++)
             {
                 char* newLine = shiftChars(memory->textMemory[i], -shift);
