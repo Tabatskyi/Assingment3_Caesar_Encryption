@@ -10,6 +10,7 @@
 #include "Paste.h"
 #include "Replace.h"
 #include "Coursor.h"
+#include <Windows.h>
 
 
 static bool validatePosition(unsigned int line, unsigned int index, Memory* memory)
@@ -24,27 +25,30 @@ static bool validatePosition(unsigned int line, unsigned int index, Memory* memo
 
 
 
-//static char* shiftChars(char* text, float shift)
-//{
-//    for (int i = 0; text[i] != '\0'; i++)
-//    {
-//        int shiftedChar = (int)text[i];
-//        if ((shiftedChar >= 'a' && shiftedChar <= 'z') || (shiftedChar >= 'A' && shiftedChar <= 'Z'))
-//        {
-//            shiftedChar = shiftedChar + shift;
-//            if ((shiftedChar > 'Z' && shiftedChar < 'a' && (int)text[i] < 'a') || shiftedChar > 'z')
-//            {
-//                shiftedChar -= 26 * abs(round(shift / 26));
-//            }
-//            else if ((shiftedChar > 'Z' && shiftedChar < 'a' && (int)text[i] >= 'a') || shiftedChar < 'A')
-//            {
-//                shiftedChar += 26 * abs(round(shift / 26));
-//            }
-//            text[i] = (char)shiftedChar;
-//        }
-//    }
-//    return text;
-//}
+static char* shiftChars(char* text, float shift)
+{
+    typedef char*(*shiftChar_ptr_t)(char*, float);
+
+    HINSTANCE handle = LoadLibrary(TEXT("CaesarCifer.dll"));
+    if (handle == nullptr || handle == INVALID_HANDLE_VALUE)
+    {
+        std::cout << "DLL not found" << std::endl;
+        return nullptr;
+    }
+
+    shiftChar_ptr_t shiftChar_ptr = (shiftChar_ptr_t)GetProcAddress(handle, "shiftChars");
+    if (shiftChar_ptr == nullptr)
+    {
+        std::cout << "Function not found" << std::endl;
+        return nullptr;
+    }
+
+    char* newText = shiftChar_ptr(text, shift);
+
+    FreeLibrary(handle);
+
+    return newText;
+}
 
 
 int main()
@@ -138,7 +142,7 @@ int main()
             unsigned int size = memory->commandsMemorySize;
             memory->undoStep++;
 
-            if (memory->undoStep >= size or memory->commandsMemory[size - memory->undoStep] == nullptr)
+            if (memory->undoStep >= size || memory->commandsMemory[size - memory->undoStep] == nullptr)
             {
 				printf(">No more commands to undo\n");
 				continue;
@@ -265,7 +269,7 @@ int main()
             int shift;
             printf(">Enter shift amount to encode: ");
             (void)scanf("%d", &shift);
-            for (int i = 0; i < memory->currentLinesNum; i++)
+            for (int i = 0; i <= memory->currentLine; i++)
 			{
 				char* newLine = shiftChars(memory->textMemory[i], shift);
                 memory->textMemory[i] = newLine;
@@ -276,7 +280,7 @@ int main()
             int shift;
             printf(">Enter shift amount to decode: ");
             (void)scanf("%d", &shift);
-            for (int i = 0; i < memory->currentLinesNum; i++)
+            for (int i = 0; i <= memory->currentLine; i++)
             {
                 char* newLine = shiftChars(memory->textMemory[i], -shift);
                 memory->textMemory[i] = newLine;
