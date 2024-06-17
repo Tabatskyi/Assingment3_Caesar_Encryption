@@ -16,4 +16,5 @@ Then print result with 'p'. As you can see encoding does well despite of large a
 <img width="675" alt="image" src="https://github.com/Tabatskyi/Assingment3_Caesar_Encryption/assets/115981919/3a793512-9bda-482c-b296-ee3f20330ef1">      
 Now decode it back with same shift and print                                      
 <img width="471" alt="image" src="https://github.com/Tabatskyi/Assingment3_Caesar_Encryption/assets/115981919/bfda5a16-2db5-4bc6-b096-eb339552f452">
-<img width="471" alt="image" src="https://github.com/Tabatskyi/Assingment3_Caesar_Encryption/assets/115981919/8c366cb8-0bcd-4c02-92fe-dd0ff0568006">
+<img width="471" alt="image" src="https://github.com/Tabatskyi/Assingment3_Caesar_Encryption/assets/115981919/8c366cb8-0bcd-4c02-92fe-dd0ff0568006">        
+Also you can build this program using static library with same functional, just run 'build_static.bat'
