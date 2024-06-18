@@ -14,6 +14,7 @@
 
 using namespace std;
 
+
 static bool validatePosition(unsigned int line, unsigned int index, Memory* memory)
 {
 	if (line >= memory->currentLinesNum || index >= memory->currentLengthNum)
@@ -23,6 +24,7 @@ static bool validatePosition(unsigned int line, unsigned int index, Memory* memo
 	}
 	return true;
 }
+
 
 static char* shiftChars(char* text, int shift)
 {
@@ -294,7 +296,7 @@ int main()
                 char* newLine = shiftChars(memory->textMemory[i], -shift);
                 memory->textMemory[i] = newLine;
             }
-								}
+	    }
         else 
             cout << ">unknown command\n";
 
