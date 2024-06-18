@@ -31,7 +31,7 @@ void LoadFromFile::Do(Memory* memory)
         }
         fclose(file);
         memory->currentLine--;
-        printf(">Load successful\n");
+        std::cout << ">File loaded\n";
         memory->coursor.SetPosition(memory->currentLine, strlen(memory->textMemory[memory->currentLine]));
     }
     else

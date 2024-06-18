@@ -20,10 +20,10 @@ void SaveToFile::Do(Memory* memory)
             fprintf(file, "%s\n", memory->textMemory[i]);
         }
         fclose(file);
-        printf(">Save successful\n");
+        std::cout << ">Save successful\n";
     }
     else
     {
-        printf(">Error opening file\n");
+        std::cout << ">Error opening file\n";
     }
 }

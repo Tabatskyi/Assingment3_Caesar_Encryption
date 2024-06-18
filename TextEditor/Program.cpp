@@ -12,18 +12,17 @@
 #include "Coursor.h"
 #include <Windows.h>
 
+using namespace std;
 
 static bool validatePosition(unsigned int line, unsigned int index, Memory* memory)
 {
 	if (line >= memory->currentLinesNum || index >= memory->currentLengthNum)
 	{
-		printf("Error: Index out of range");
+		cout << "Error: Index out of rang\n";
 		return false;
 	}
 	return true;
 }
-
-
 
 static char* shiftChars(char* text, int shift)
 {
@@ -32,14 +31,14 @@ static char* shiftChars(char* text, int shift)
     HINSTANCE handle = LoadLibrary(TEXT("CaesarCifer.dll"));
     if (handle == nullptr || handle == INVALID_HANDLE_VALUE)
     {
-        std::cout << "DLL not found" << std::endl;
+        cout << "DLL not found\n";
         return nullptr;
     }
 
     shiftChar_ptr_t shiftChar_ptr = (shiftChar_ptr_t)GetProcAddress(handle, "shiftChars");
     if (shiftChar_ptr == nullptr)
     {
-        std::cout << "Function not found" << std::endl;
+        cout << "Function not found\n";
         return nullptr;
     }
 
@@ -58,21 +57,22 @@ int main()
 
     do
     {
-        printf(">");
-        (void)scanf(" %c", &command);
+        cout << ">";
+        cin >> command;
 
         if (command == 'a')
         {
             char* inputBuffer = (char*)malloc(memory->currentLengthNum * sizeof(char));
-            printf(">Enter text to append: ");
-            (void)scanf(" %[^\n]s", inputBuffer);
+            cout << ">Enter text to append: ";
+            cin.ignore();
+            cin.getline(inputBuffer, memory->currentLengthNum);
             Append* append = new Append(memory->currentLine, inputBuffer);
             append->Do(memory);
             memory->saveCommand(append);
         }
         else if (command == 'n')
         {
-            printf(">New line started\n");
+            cout << ">New line started\n";
             NewLine* newLine = new NewLine(memory->currentLine);
             newLine->Do(memory);
             memory->saveCommand(newLine);
@@ -80,16 +80,16 @@ int main()
         else if (command == 's')
         {
             char filename[100];
-            printf(">Enter filename for saving: ");
-            (void)scanf(" %s", filename);
+            cout << ">Enter filename for saving: ";
+            cin >> filename;
             SaveToFile* saveToFile = new SaveToFile(filename);
             saveToFile->Do(memory);
         }
         else if (command == 'l')
         {
             char filename[100];
-            printf(">Enter filename for loading: ");
-            (void)scanf(" %s", filename);
+            cout << ">Enter filename for loading: ";
+            cin >> filename;
             LoadFromFile* loadFromFile = new LoadFromFile(filename);
             loadFromFile->Do(memory);
         }
@@ -109,8 +109,9 @@ int main()
 
             memory->coursor.GetPosition(line, index);
 
-            printf(">Enter text to insert: ");
-            (void)scanf(" %[^\n]", inputBuffer);
+            cout << ">Enter text to insert: ";
+            cin.ignore();
+            cin.getline(inputBuffer, memory->currentLengthNum);
 
             Insert* insert = new Insert(line, index, inputBuffer);
             insert->Do(memory);
@@ -119,8 +120,9 @@ int main()
         else if (command == 'f')
         {
             char* inputBuffer = new char[memory->currentLengthNum];
-            printf(">Enter text to search: ");
-            (void)scanf(" %[^\n]", inputBuffer);
+            cout << ">Enter text to search: ";
+            cin.ignore();
+            cin.getline(inputBuffer, memory->currentLengthNum);
 
             memory->find(inputBuffer);
         }
@@ -130,9 +132,9 @@ int main()
 
             memory->coursor.GetPosition(line, index);
 
-            printf(">Choose symbols count to delete: ");
-            (void)scanf("%u", &symbolsCount);
-            
+            cout << ">Choose symbols count to delete: ";
+            cin >> symbolsCount;
+                    
             Delete* deleteCommand = new Delete(line, index, symbolsCount);
             deleteCommand->Do(memory);
             memory->saveCommand(deleteCommand);
@@ -144,7 +146,7 @@ int main()
 
             if (memory->undoStep >= size || memory->commandsMemory[size - memory->undoStep] == nullptr)
             {
-				printf(">No more commands to undo\n");
+				cout << ">No more commands to undo\n";
 				continue;
 			}
             memory->commandsMemory[size - memory->undoStep]->Undo(memory);
@@ -154,7 +156,7 @@ int main()
             unsigned int size = memory->commandsMemorySize;
             if (memory->undoStep == 0)
 			{
-				printf(">No more commands to redo\n");
+				cout << ">No more commands to redo\n";
 				continue;
 			}
             memory->commandsMemory[size - memory->undoStep]->Do(memory);
@@ -166,9 +168,9 @@ int main()
 
             memory->coursor.GetPosition(line, index);
 
-            printf(">Choose symbols count to cut: ");
-            (void)scanf("%u", &symbolsCount);
-            
+            cout << ">Choose symbols count to cut: ";
+            cin >> symbolsCount;
+                    
             Cut* cut = new Cut(line, index, symbolsCount);
             cut->Do(memory);
             memory->saveCommand(cut);
@@ -179,8 +181,8 @@ int main()
 
             memory->coursor.GetPosition(line, index);
 
-            printf(">Choose symbols count to copy: ");
-            (void)scanf("%u", &symbolsCount);
+            cout << ">Choose symbols count to copy: ";
+            cin >> symbolsCount;
 
             Copy* copy = new Copy(line, index, symbolsCount);
             copy->Do(memory);
@@ -202,8 +204,9 @@ int main()
 
             memory->coursor.GetPosition(line, index);
 
-            printf(">Enter replacement text: ");
-            (void)scanf(" %[^\n]", inputBuffer);
+            cout << ">Enter replacement text: ";
+            cin.ignore();
+            cin.getline(inputBuffer, memory->currentLengthNum);
 
             Replace* replace = new Replace(line, index, inputBuffer);
             replace->Do(memory);
@@ -214,19 +217,19 @@ int main()
             memory->freeMemory();
             memory->currentLine = 0;
 
-            printf(">Memory erased\n");
-            
+            cout << ">Memory erased\n";
+                    
             memory->initializeMemory();
         }
         else if (command == 'q')
         {
-            printf(">Goodbye!\n");
+            cout << ">Goodbye!\n";
         }
         else if (command == 'm')
         {
             char direction;
-            printf(">Enter direction (a=left, d=right, w=up, s=down): ");
-            (void)scanf(" %c", &direction);
+            cout << ">Enter direction (a=left, d=right, w=up, s=down): ";
+            cin >> direction;
 
             unsigned int x, y;
             memory->coursor.GetPosition(x, y);
@@ -250,40 +253,38 @@ int main()
                     memory->coursor.SetPosition(x + 1, y);
                 break;
             default:
-                printf(">Invalid direction\n");
+                cout << ">Invalid direction\n";
             }
         }
-        else if (command == 'g')
+        else if (command == 'j')
 		{
 			unsigned int x, y;
-			printf(">Enter position (x y): ");
-			(void)scanf("%u %u", &x, &y);
+			cout << ">Enter position (x y): ";
+			cin >> x >> y;
 
 			if (validatePosition(x, y, memory))
-			{
 				memory->coursor.SetPosition(x, y);
-			}
 		}
         else if (command == '/')
         {
             int shift;
-            printf(">Enter shift amount to encode: ");
-            (void)scanf("%u", &shift);
+            cout << ">Enter shift amount to encode: ";
+            cin >> shift;
 
             if (shift > 26)
                 shift %= 26;
 
             for (int i = 0; i <= memory->currentLine; i++)
-			{
-				char* newLine = shiftChars(memory->textMemory[i], shift);
+            {
+                char* newLine = shiftChars(memory->textMemory[i], shift);
                 memory->textMemory[i] = newLine;
-			}
+            }
 		}
         else if (command == '\\')
         {
             int shift;
-            printf(">Enter shift amount to decode: ");
-            (void)scanf("%u", &shift);
+            cout << ">Enter shift amount to decode: ";
+            cin >> shift;
 
             if (shift > 26)
 				shift %= 26;
@@ -293,13 +294,13 @@ int main()
                 char* newLine = shiftChars(memory->textMemory[i], -shift);
                 memory->textMemory[i] = newLine;
             }
-		}
+								}
         else 
-            printf(">unknown command\n");
+            cout << ">unknown command\n";
 
     } while (command != 'q');
 
     delete memory;
 
     return 0;
-} 
+}
